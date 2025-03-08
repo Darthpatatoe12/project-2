@@ -1,0 +1,373 @@
+<p><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body></p>
+
+<div class="container">
+    <h2>Search for a School</h2>
+    <input type="text" id="schoolInput" placeholder="Enter school name (e.g., Cypress HS)">
+    <button onclick="findSchool()">Search</button>
+    <div class="result" id="result"></div>
+
+<p></div></p>
+
+<script>
+    // JavaScript equivalent of the C struct array
+    const schools = [
+        {"name": "Tyler ISD", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Longview ISD", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Bishop T.K. Gorman", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Brookhill School", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Cumberland El", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Cumberland Ms", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Cumberland HS", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Grace Community", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Christian Heritage", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Regents Academy", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "SFA University", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "SFA Music Prep", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+    {"name": "Private Teacher - Jamie Reason", "district": "East Texas", "representative": "Matt", "deliveryDay": "As Needed"},
+
+    // Taki - Monday (Humble ISD - South)
+    {"name": "Woodcreek Ms", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "Summercreek HS", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "Atascocita HS", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "Atascocita Ms", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "Humble Ms", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "West Lake Ms", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+    {"name": "Autumn Ridge Ms", "district": "Humble ISD - South", "representative": "Taki", "deliveryDay": "Monday"},
+
+    // Brian - Monday (Houston ISD & Aldine ISD as needed)
+    {"name": "All Schools", "district": "Houston ISD", "representative": "Brian", "deliveryDay": "As Needed"},
+    {"name": "Aldine ISD", "district": "Aldine ISD", "representative": "Brian", "deliveryDay": "As Needed"},
+    {"name": "Lamar Consolidated ISD", "district": "Lamar ISD", "representative": "Brian", "deliveryDay": "As Needed"},
+
+    // Tony - Monday (Cy Fair ISD)
+    {"name": "Cyfair HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Ranch HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Smith Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Springs HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Sprague Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Lee El", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Brosnahan El", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Rowe Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Park HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Goodson Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Lakes HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Labay Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Wood HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cy Falls HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Truitt Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Cook Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Jersey Village HS", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+    {"name": "Dean Ms", "district": "Cy Fair ISD", "representative": "Tony", "deliveryDay": "Monday"},
+
+    // Stuart - Monday (Katy ISD)
+    {"name": "Cardiff JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Mayde Creek JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Katy JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Morton Ranch JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Morton Ranch HS", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "McDonald JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Mayde Creek HS", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Haskett JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Katy HS", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Stockdick JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Paetow HS", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Freeman HS", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Nelson JH", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+    {"name": "Hopper Ms (Cy-Fair)", "district": "Katy ISD", "representative": "Stuart", "deliveryDay": "Monday"},
+
+    // Leo - Monday (Pasadena ISD)
+    {"name": "Milstead Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "South Houston HS", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Miller Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Bondy Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Pasadena Memorial HS", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Carter Lomax Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Fred Roberts Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Thompson Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Morris Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Dobie HS", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Melillo Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+    {"name": "Beverly Hills Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Monday"},
+
+//Tuesdays
+
+
+    // Taki - Tuesday (Alief ISD)
+    {"name": "Albright Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Alief Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Budewig Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Elsik HS", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Hastings HS", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Holub Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Kerr HS", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Klentzman Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Killough Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Mata Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Miller Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "O'Donnell Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Olle Ms", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Owens Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Taylor HS", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+    {"name": "Youngblood Int.", "district": "Alief ISD", "representative": "Taki", "deliveryDay": "Tuesday"},
+
+    // Brian - Tuesday (Fort Bend ISD & Private)
+    {"name": "Bush HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Austin HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Garcia Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Hodges Bend Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Crockett Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Travis HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Bowie Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Sartartia Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Cornerstone Christian Academy", "district": "Private", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Clements HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Fort Settlement Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "First Colony Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Kempner HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+    {"name": "Sugarland Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Tuesday"},
+
+    // Tony - Tuesday (Conroe ISD)
+    {"name": "Coulson Tough El", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Deretchin El", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "York JH", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Clark Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Tom Cox Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Collins Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Woodlands HS", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Wilkerson Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Vogel Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Oak Ridge HS", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "College Park HS", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Mitchell Int.", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "McCullough JH", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+    {"name": "Knox JH", "district": "Conroe ISD", "representative": "Tony", "deliveryDay": "Tuesday"},
+
+    // Stuart - Tuesday (Clear Creek ISD)
+    {"name": "Seabrook Int", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+    {"name": "Bayside Int", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+    {"name": "Clear Falls HS", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+    {"name": "League City Int.", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+    {"name": "Clear Creek HS", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+    {"name": "Clear Creek Int.", "district": "Clear Creek ISD", "representative": "Stuart", "deliveryDay": "Tuesday"},
+
+    // Leo - Tuesday (Pasadena ISD)
+    {"name": "San Jacinto Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Kendrick Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Park View Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Rayburn HS", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Keller Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Bobby Shaw Ms", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Jackson Int", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+    {"name": "Pasadena HS", "district": "Pasadena ISD", "representative": "Leo", "deliveryDay": "Tuesday"},
+
+
+
+//Wednesday
+
+// Taki - Wednesday (Humble ISD - North)
+    {"name": "Humble HS", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Ross Sterling Ms", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Timberwood Ms", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Kingwood Ms", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Creekwood Ms", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Riverwood Ms", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Kingwood Park HS", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+    {"name": "Kingwood HS", "district": "Humble ISD - North", "representative": "Taki", "deliveryDay": "Wednesday"},
+
+    // Brian - Wednesday (Fort Bend ISD)
+    {"name": "Willowridge HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "McAuliffe Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Hightower HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Crawford HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Ronald Thornton Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Ridge Point HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Baines Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Elkins HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Lake Olympia Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Quail Valley Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Marshall HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Missouri City Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Dulles HS", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+    {"name": "Dulles Ms", "district": "Fort Bend ISD", "representative": "Brian", "deliveryDay": "Wednesday"},
+
+    // Tony - Wednesday (New Caney & Tomball ISD)
+    {"name": "Pine Valley Ms", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Keefer Crossing Ms", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "White Oak Ms", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Woodridge Forest Ms", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "New Caney HS", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Porter HS", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "West Fork HS", "district": "New Caney ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Creekside Park JH", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Grand Lakes JH", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Willow Wood JH", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Northpointe Int.", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Tomball Int.", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Tomball JH", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Tomball HS", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+    {"name": "Oak Crest Int.", "district": "Tomball ISD", "representative": "Tony", "deliveryDay": "Wednesday"},
+
+    // Stuart - Wednesday (Deer Park ISD & Goose Creek ISD)
+    {"name": "Bonnette JH", "district": "Deer Park ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Deer Park JH", "district": "Deer Park ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Fairmont JH", "district": "Deer Park ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Deer Park HS", "district": "Deer Park ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "La Porte HS (LPISD)", "district": "Deer Park ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Baytown Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Cedar Bayou Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Green Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Gentry Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Highlands Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Horace Mann Jr", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Lee HS", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Sterling HS", "district": "Goose Creek ISD", "representative": "Stuart", "deliveryDay": "Wednesday"},
+    {"name": "Baytown Christian", "district": "Baytown Christian (private)", "representative": "Stuart", "deliveryDay": "Wednesday"},
+
+// Taki - Thursday (Klein ISD - Collins Cluster)
+    {"name": "Klein Collins HS", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Zwink El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Fox El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Strack Int.", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Benfer El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Haude El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Lemm El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Schindewolf Int.", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Kreinhop El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Roth El", "district": "Klein ISD - Collins Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+
+    // Taki - Thursday (Klein ISD - Forest Cluster)
+    {"name": "Klein Forest HS", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Eiland El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Klenk El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Klein Int.", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Epps Island El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Nitsch El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Wunderlich Int.", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Greenwood Forest El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "McDougle El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Kaiser El", "district": "Klein ISD - Forest Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+
+    // Taki - Thursday (Klein ISD - Klein Cluster)
+    {"name": "Klein HS", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Brill El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Kuehnle El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Kleb Int.", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Mittelstadt El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Ehrhardt El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Krimmel Int.", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Benignus El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Mueller El", "district": "Klein ISD - Klein Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+
+    // Taki - Thursday (Klein ISD - Oak Cluster)
+    {"name": "Hildebrandt Int.", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Northampton El", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Schultz El", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Hofius Int.", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Metzler El", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Mahaffey El", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "French El", "district": "Klein ISD - Oak Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+
+    // Taki - Thursday (Klein ISD - Cain Cluster)
+    {"name": "Klein Cain HS", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Krahn El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Kohrville El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Doerre Int.", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Frank El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Hassler El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Theiss El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Ulrich Int.", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Blackshear El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+    {"name": "Bernshausen El", "district": "Klein ISD - Cain Cluster", "representative": "Taki", "deliveryDay": "Thursday"},
+
+    ];
+
+    function findSchool() {
+        let input = document.getElementById("schoolInput").value.trim();
+        let resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "";  // Clear previous result
+
+        if (input === "") {
+            resultDiv.innerHTML = "<p>Please enter a school name.</p>";
+            return;
+        }
+
+        let found = false;
+        let mattFound = false;
+        let results = "<h3>Results:</h3>";
+
+        schools.forEach(school => {
+            if (school.name.toLowerCase() === input.toLowerCase()) {
+                found = true;
+                results += `
+                    <p><strong>School:</strong> ${school.name}</p>
+                    <p><strong>District:</strong> ${school.district}</p>
+                    <p><strong>Representative:</strong> ${school.representative}</p>
+                    <p><strong>Delivery Day:</strong> ${school.deliveryDay}</p>
+                    <hr>`;
+
+                if (school.representative === "Matt") {
+                    mattFound = true;
+                }
+            }
+        });
+
+        if (!found) {
+            resultDiv.innerHTML = "<p>School not found. Please check the name and try again.</p>";
+        } else {
+            resultDiv.innerHTML = results;
+
+            if (mattFound) {
+                resultDiv.innerHTML += `<p style="color: red;"><strong>⚠️ Warning:</strong> Deliveries for East Texas (Matt) vary. Please ask for the delivery date.</p>`;
+            }
+        }
+    }
+</script>
+
+<p></body>
+</html></p>
